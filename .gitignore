@@ -1,0 +1,9 @@
+.DS_Store
+._.DS_Store
+"System Volume Information"/
+Recycled/
+build-*/
+Makefile
+CMakeLists.txt.*
+*.pro.user
+*.pro.user*
