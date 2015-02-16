@@ -21,7 +21,6 @@
 #include <private/qquickflickable_p.h>
 #include <private/qquickanchors_p.h>
 #include <private/qquickanchors_p_p.h>
-#include <QQmlEngine>
 
 #include "itempool.h"
 
@@ -37,9 +36,11 @@ LazyListView::LazyListView() :
     m_cacheSize(CACHE_SIZE),
     m_itemPool(new ItemPool())
 {
+    // Anchor the QQuickFlickable to this item
     QQuickAnchors * flickable_anchor = qvariant_cast<QQuickAnchors *>(m_flickable->property("anchors"));
     flickable_anchor->setFill(this);
 
+    // Set the default orientation to vertical
     m_flickable->setFlickableDirection(QQuickFlickable::VerticalFlick);
 }
 
@@ -60,6 +61,7 @@ void LazyListView::setOrientation(int orientation)
     {
         m_flickable->setFlickableDirection(direction);
 
+        // When orientation changes make sure to rearange all the visible items
         rearangeListItems();
 
         emit orientationChanged();
@@ -68,6 +70,7 @@ void LazyListView::setOrientation(int orientation)
 
 QQmlComponent *LazyListView::getDelegate() const
 {
+    // Why would anyone do this??
     return m_delegate;
 }
 
@@ -135,16 +138,16 @@ void LazyListView::rearangeListItems()
     // Set the proper content size based on orientation
     if (m_flickable->flickableDirection() == QQuickFlickable::VerticalFlick)
     {
-        m_flickable->setContentHeight(bufferSize * m_visibleItems.at(0)->height());
+        m_flickable->setContentHeight(bufferSize * m_visibleItems.at(0)->height()); // What is no items are visible
     }
     else
     {
-        m_flickable->setContentWidth(bufferSize * m_visibleItems.at(0)->width());
+        m_flickable->setContentWidth(bufferSize * m_visibleItems.at(0)->width()); // What if no items are visible
     }
 }
 
 /*
- * Helper functions
+ * Helper functions to convert between QQuickFlickable::FlickableDirection and Qt::Orientation
  */
 
 inline QQuickFlickable::FlickableDirection convertFromOrientation(Qt::Orientation orientation)

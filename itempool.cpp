@@ -1,5 +1,3 @@
-#include "itempool.h"
-
 /*
  * LazyListView
  * Copyright (C) 2015 Romeo Calota <kicsyromy@gmail.com>
@@ -17,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "itempool.h"
 
 #include <QQuickItem>
 #include <QQmlComponent>
@@ -57,12 +56,10 @@ void ItemPool::releaseItem(QQuickItem *item)
 
 void ItemPool::clear()
 {
-     // Iterate throught all the items and delete the items
     for (auto it = m_items.begin(); it != m_items.end(); ++it)
     {
         delete it.key();
     }
 
-    // Clear the actual map
     m_items.clear();
 }
