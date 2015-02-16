@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,23 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGuiApplication>
-#include <QQuickView>
+#ifndef TESTMODEL_H
+#define TESTMODEL_H
 
-#include "lazylistview.h"
-#include "testmodel.h"
+#include <QAbstractListModel>
 
-int main(int argc, char *argv[])
+class TestModel : public QAbstractListModel
 {
-    QGuiApplication app(argc, argv);
+public:
+    enum MyRoles
+    {
+        Role1 = Qt::UserRole + 1,
+        Role2,
+        Role3
+    };
 
-    QQuickView viewer;
+public:
+    TestModel();
 
-    qmlRegisterType<LazyListView>("LazyViews", 1, 0, "LazyListView");
-    qmlRegisterType<TestModel>("LazyViews", 1, 0, "TestModel");
+public:
+    virtual int rowCount(const QModelIndex &parent) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QHash<int, QByteArray> roleNames() const;
+};
 
-    viewer.setSource(QUrl("qml/main.qml"));
-    viewer.show();
-
-    return app.exec();
-}
+#endif // TESTMODEL_H

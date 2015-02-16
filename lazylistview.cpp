@@ -28,13 +28,14 @@
 
 #define CACHE_SIZE      20
 
-inline QQuickFlickable::FlickableDirection convertFromOrientation(Qt::Orientation orientation);
-inline Qt::Orientation convertToOrientation(QQuickFlickable::FlickableDirection direction);
+QQuickFlickable::FlickableDirection convertFromOrientation(Qt::Orientation orientation);
+Qt::Orientation convertToOrientation(QQuickFlickable::FlickableDirection direction);
 
 LazyListView::LazyListView() :
     m_flickable(new QQuickFlickable(this)),
     m_cacheSize(CACHE_SIZE),
-    m_itemPool(new ItemPool())
+    m_itemPool(new ItemPool()),
+    m_model(NULL)
 {
     // Anchor the QQuickFlickable to this item
     QQuickAnchors * flickable_anchor = qvariant_cast<QQuickAnchors *>(m_flickable->property("anchors"));
@@ -76,8 +77,26 @@ QQmlComponent *LazyListView::getDelegate() const
 
 void LazyListView::setDelegate(QQmlComponent *delegate)
 {
+    m_delegate = delegate;
     createListItems(delegate);
     rearangeListItems();
+}
+
+QObject *LazyListView::getModel() const
+{
+    return m_model;
+}
+
+void LazyListView::setModel(QObject *model)
+{
+    if (model != m_model)
+    {
+        m_model = model;
+
+        qDebug() << "model:" << m_model;
+
+        emit modelChanged();
+    }
 }
 
 void LazyListView::createListItems(QQmlComponent *component)

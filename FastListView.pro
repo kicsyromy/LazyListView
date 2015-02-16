@@ -30,12 +30,14 @@ QMAKE_CXXFLAGS += -fpermissive
 
 SOURCES += main.cpp \
     lazylistview.cpp \
-    itempool.cpp
+    itempool.cpp \
+    testmodel.cpp
 
 OTHER_FILES += qml/*.qml
 
 HEADERS += \
     lazylistview.h \
-    itempool.h
+    itempool.h \
+    testmodel.h
 
 macx:QMAKE_POST_LINK += cp -rvf $$quote($$_PRO_FILE_PWD_/qml) $$quote($$OUT_PWD/FastListView.app/Contents/MacOS/)

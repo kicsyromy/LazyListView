@@ -27,9 +27,9 @@ Item {
         id: view
         anchors.fill: parent
 
-        // Orientation is set after the delegate... so that kinda screws things up a bit
-        // need to find a way to make this work....
         orientation: Qt.Vertical
+
+        model: TestModel {}
 
         delegate: Component {
             Image {
